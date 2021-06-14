@@ -1,0 +1,15 @@
+# Modeling Practice
+
+General Documentation
+
+import cobra                  #gives access to CobraPy documentation
+model =cobra.io.load_json_model("")                  #imports the specific model
+
+for x in model.reactions:
+    print(x.id+"\t"+x.name)            #lists all metabolic reactions involved
+
+
+model.reactions.get_by_id("")    # explains a certain reaction
+
+model.genes.get_by_id("")    #explains a certain gene
+
