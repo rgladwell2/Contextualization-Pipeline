@@ -1,2 +1,2 @@
 # Psuedomonas-Pipeline
-A pipeline for P. Aeruginosa models
+A tutorial for contextualizing P. Aeruginosa models
