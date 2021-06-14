@@ -13,3 +13,14 @@ model.reactions.get_by_id("")    # explains a certain reaction
 
 model.genes.get_by_id("")    #explains a certain gene
 
+cobra_model = cobra.test.create_test_model("")       #creates a model for testing knockout
+
+import pandas
+from time import time
+
+import cobra.test                                      #all of this is imported to simulate knockouts
+from cobra.flux_analysis import (
+    single_gene_deletion, single_reaction_deletion, double_gene_deletion,
+    double_reaction_deletion)
+    
+    
