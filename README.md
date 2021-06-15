@@ -7,7 +7,7 @@ A tutorial for contextualizing P. Aeruginosa models
 
 2.) Download and clean data
 
-3.) Find an up-to-date GENRE of Pseudomonas 
+3.) Find an up-to-date GENRE model of Pseudomonas 
 
 4.) Use RIPTiDe to contextualize the model using the data
 
