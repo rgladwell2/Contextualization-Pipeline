@@ -39,7 +39,8 @@ from cobra.flux_analysis import (
 
 
 import cobra                  #gives access to CobraPy documentation
-model =cobra.io.load_json_model("")                  #imports the specific model
+model =cobra.io.load_json_model("")    #imports the specific model if json
+model = cobra.io.read_sbml_model("") #If xml file
 
 for x in model.reactions:
     print(x.id+"\t"+x.name)            #lists all metabolic reactions involved
@@ -69,6 +70,11 @@ Methods and their physical correlative:
 lower bound of exchanges- nutrition entering cell
 upper bound of exchanges - nutrition exiting cell
 
+for i in model.exchanges:
+         i.lower_bound = -1000          #for the PA model in use, this allows nutrition into the cell
+         
+         
+         
 How to check flux of certain reactions after optimizing-
 model.optimize().fluzes.reactionID
 
