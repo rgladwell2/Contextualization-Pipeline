@@ -1,0 +1,175 @@
+This file lists functions that can be used to perform analysis on models. The goal is to provide the documentation in a clear and consise way, to minimize confusion and allow 
+anyone to explore the model.
+
+
+
+#General Documentation
+
+
+##Stuff to import at beginning-
+
+#Load packages & model
+import cobra
+import xlrd
+import pandas as pd
+import pickle
+from libsbml import *
+from pprint import pprint
+from cobra.flux_analysis import gapfill
+from copy import *
+from cobra import *
+from cobra.flux_analysis import *
+from LJD_Functions_DDP import *
+from DDP_Functions  import *
+from time import time
+                                  
+
+#To import a model
+model =cobra.io.load_json_model("file_name")    #imports the specific model if .json
+model =cobra.io.read_sbml_model("file_name")   #If .xml file
+
+#To optimmize the model
+model.optimize()
+##check the objective function via
+model.summary()
+
+#To change the reaction fluxes
+## This is a standard way to ensure nutrition is entering the cell. If it isn't, the cell won't grow
+for i in model.exchanges:
+         i.lower_bound = -1000  
+##you can also use model.reactions or any other group of reactions you would like to change the fluxes of
+
+
+#To change the media
+model = changeMedia_PA_LJD(model,1)
+####IMPORTANT- if you have trouble using this function like I did, open the LJD file and just copy the code for the 
+specific media specifically. Sometimes you must change the exchange fluxes manually. 
+
+
+
+#retrieving reactions{
+
+## returns all reactions using loop
+for x in model.reactions:
+    print(x.id+"\t"+x.name)  
+
+##or more simply
+model.reactions
+
+## returns specific reactions using ID
+
+model.reactions.get_by_id("") 
+
+## or 
+
+model.reactions.ID
+}
+use ModelSeed database to look up reactions- can find name, ID, metabolites, all info involved
+
+
+
+
+
+
+#retreving genes{
+
+## returns all genes using loop
+for x in model.genes:
+    print(x.id+"\t"+x.name)  
+
+##or more simply
+model.genes
+
+## returns specific genes using ID
+
+model.genes.get_by_id("") 
+
+## or 
+
+model.genes.ID
+
+}
+use Kegg to look up gene information
+
+
+
+
+
+#retreving metabolites{
+
+## returns all metabolites using loop
+for x in model.metabolites:
+    print(x.id+"\t"+x.name)  
+
+##or more simply
+model.metabolites
+
+## returns specific metabolites using ID
+
+model.metabolites.get_by_id("") 
+
+## or 
+
+model.metabolites.ID
+
+}
+use ModelSeed to look up metabolites
+
+
+
+    
+##Methods and their physical correlative:
+Exchange reactions- introducing metabolites to the model- tracks what the organism is producing/consuming
+Transport reactions- metabolite movement from extracellular space to cytosol and vice versa
+Metabolic reactions- Chemical reactions in the cytosolic compartment that represent the organisms metabolism
+
+Exchange rxns- in or out of extracellular space
+Transport- in or out of cytosolic space
+metabolic rxns- conversions inside the cytosol
+
+
+
+
+lower bound of Exchange reactions(negative)- nutrition entering model- (-1000 = 1000 into the cell)
+upper bound of Exchange reactions(positive) - nutrition exiting model- (1000 = 1000 out of the cell)        
+         
+         
+         
+##How to check flux of certain reactions after optimizing-
+
+model.optimize().fluzes.reactionID #individual reaction and flux
+
+model.optimize().fluxes  #fluxes for every reaction 
+
+##How to export data to an excel file-
+soln = model.optimize().fluxes
+soln.to_excel(“solution.xlsx”) #Save pandas dataframe to excel
+
+
+
+#How to change objective funciton-
+model.objective = model.reactions.rxnID
+
+##How to add rxns to model-
+reaction1 = Reaction(‘Desired Rxn name’)
+reaction1.name = ‘Desired Rxn name’
+reaction1.subsystem = ‘subsystem of desire’
+reaction1.lower_bound = 0
+reaction1.upper_bound = 1000
+reaction1.add_metabolites({
+   model.metabolites.ID: -1.0- represents stoichiometric coefficient})
+model.add_reactions([reaction1])
+
+
+
+#How to knock out components of metabolism
+with model:
+    model.(can be genes or reactions here).ID.knock_out()
+    print(model.optimize())
+#this is used to compare how essential a gene or reaction is to the objective function and other metabolic processes
+
+
+
+
+
+
