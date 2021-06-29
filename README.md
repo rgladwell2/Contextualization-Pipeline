@@ -1,5 +1,5 @@
-# Psuedomonas-Pipeline
-A tutorial for contextualizing P. Aeruginosa models
+# Pseudomonas-Pipeline
+A tutorial for contextualizing metabolic models, using Pseudomonas Aeruginosa as an example
 
 
 ## Table of Contents
