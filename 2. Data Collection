@@ -3,12 +3,18 @@
 
 ##GENRE
 The first step is to find an up-to-date metabolic model of a given organism (GENRE).
-This model should contain mathematical representations of all of the metabolic processes included in a given organism.
+GENRE's contain mathematical representations of all of the metabolic processes included in a given organism.
 The model will be used in RIPTiDe as the foundational basis of the more contextualized model. 
 
 There are many models for use on BioModels, a public repository for mathematical models. There are also easy to access models on GitHub. 
 
-For my project, I accessed my model from GitHub. The model is of P. Aeruginosa UCBPP-PA14 and is named iPau21. 
+BioModels website: https://www.ebi.ac.uk/biomodels/
+GitHub ModelSEED: https://github.com/ModelSEED/ModelSEEDDatabase
+Ex. of GitHub as a modeling resource: https://github.com/cdanielmachado/carveme
+
+
+
+For my project, I accessed my model via GitHub. The model is of P. Aeruginosa UCBPP-PA14 and is named iPau21. 
 
 Models can be in many formats, the most common of which are .json and .xml. Each of these require different syntax in order to import into Jupyter Notebook.
 See "Importing Data" section for more detail
