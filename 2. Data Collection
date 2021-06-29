@@ -27,6 +27,9 @@ Using Google Scholar to find relevant research articles is an effective strategy
 is the definitive resource for transcriptomic data sets, but it can be challanging to find one that is ideal for the desired context. For that reason, it might be more effective 
 to search for articles instead of navigating the SRA website directly.
 
+NCBI SRA website:https://www.ncbi.nlm.nih.gov/sra
+Google Scholar:https://scholar.google.com/
+
 For my project, I wished to compare the contextualized models of P. Aeruginosa in different infection environments in the human body. Using the article 
 "Genetically diverse Pseudomonas aeruginosa populations display similar transcriptomic profiles in a cystic fibrosis explanted lung," I found a link to the transcriptome in the 
 SRA database. THe transcriptome satisfied the projects needs. It provided data that could contextualize the iPau21 model to simulate P. Aeruginosa metabolic activity
