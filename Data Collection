@@ -1,0 +1,37 @@
+#Data Collection
+
+
+##GENRE
+The first step is to find an up-to-date metabolic model of a given organism (GENRE).
+This model should contain mathematical representations of all of the metabolic processes included in a given organism.
+The model will be used in RIPTiDe as the foundational basis of the more contextualized model. 
+
+There are many models for use on BioModels, a public repository for mathematical models. There are also easy to access models on GitHub. 
+
+For my project, I accessed my model from GitHub. The model is of P. Aeruginosa UCBPP-PA14 and is named iPau21. 
+
+Models can be in many formats, the most common of which are .json and .xml. Each of these require different syntax in order to import into Jupyter Notebook.
+See "Importing Data" section for more detail
+
+
+##Transcriptome
+Next, find a transcriptome of the organism in a paritular environment that would provide the desired context for the model. 
+Appropriate transcriptomes can demand extensive searching. However, they can be found in many places.
+Using Google Scholar to find relevant research articles is an effective strategy, as the transcriptomic data sets are sometimes attached. NCBI SRA(Sequence Read Archives) 
+is the definitive resource for transcriptomic data sets, but it can be challanging to find one that is ideal for the desired context. For that reason, it might be more effective 
+to search for articles instead of navigating the SRA website directly.
+
+For my project, I wished to compare the contextualized models of P. Aeruginosa in different infection environments in the human body. Using the article 
+"Genetically diverse Pseudomonas aeruginosa populations display similar transcriptomic profiles in a cystic fibrosis explanted lung," I found a link to the transcriptome in the 
+SRA database. THe transcriptome satisfied the projects needs. It provided data that could contextualize the iPau21 model to simulate P. Aeruginosa metabolic activity
+in the human lung. 
+
+I also used "Major Transcriptome Changes Accompany the Growth of Pseudomonas aeruginosa in Blood from Patients with Severe Thermal Injuries" to find a transcriptome that
+could provide context for P. Aeruginosa infection in a burn wound. The actual dataset was also stored in the NCBI SRA database. 
+
+These two transcriptomes provided context for infections in different environments, which allowed me to compare the differences in the metabolic activity in these environments.
+
+
+
+
+
