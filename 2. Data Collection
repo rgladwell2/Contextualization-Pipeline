@@ -1,5 +1,5 @@
 #Data Collection
-
+For computational modeling, I used CobraPy. For this reason, my tutorial is limited to CobraPy syntax, which can be found in section 2.1
 
 ##GENRE
 The first step is to find an up-to-date metabolic model of a given organism (GENRE).
