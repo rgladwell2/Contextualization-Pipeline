@@ -1,1 +1,45 @@
 Because of the large computational demands of processing transcriptomic data, a HPC system is often used. Remote HPC servers can be accesssed remotely off of a base platform. For my project I used Ubuntu, so this section will include only Ubuntu syntax. See section 3.1 for basic Ubuntu commands. 
+
+
+#Index Genome
+This first step is to find and download the reference genome. This should be done locally. When downloading the genome, the file should be in FASTA format, having a .fasta or .fa extention. When downloading off of NCBI, the file is often stored in a .fna.gz format. To convert the file into the appropriate format, the file must first be unzipped. In Ubuntu, locate the location of the downloaded file and move it to the folder you are working in: I simply used my base directory. 
+
+My code, which moves the downloaded genome from NCBI into my workspace:
+mv /mnt/c/Users/rglad/Downloads/GCF_000006765.1_ASM676v1_genomic.fna.gz /home/rgladwell2
+
+Now, when ls is called in the home directory, the file name should appear. We can now unzip the file uzing the command gunzip filename.fna.gz. When ls is called now, the file name should appear without the .gz format. Next the file should be converted from .fna to .fa. Use the command cp filename.fna filename.fa to accomplish this. 
+
+My example code:
+ gunzip GCF_000006765.1_ASM676v1_genomic.fna.gz
+ cp GCF_000006765.1_ASM676v1_genomic.fna GCF_000006765.1_ASM676v1_genomic.fa
+ 
+ Use the rm command to get rid of any files you no longer need, such as the remaining .fna file.
+ 
+ It is now time to upload the .fa file to an HPC. For my HPC, I simply signed into sftp(secure file transfer protocol) on the rivanna server then used the put command to put the file in my scratch directory.
+ 
+ Ex. code: put GCF_000006765.1_ASM676v1_genomic.fa /scratch/username/
+ 
+ When executing ls in the scratch directory, the file should now appear
+ The index genome can now be constructed. Run the following script in order to generate the index:
+ 
+module load gcc
+module load bowtie2
+bowtie2-build filename.fa Desired_filename_genes
+
+Ex. code
+module load gcc
+module load bowtie2
+bowtie2-build bowtie2-build GCF_000006765.1_ASM676v1_genomic.fa Index_genome
+
+When running ls, 6 new files ending in .bt2 should have appeared bearing the name that you chose in the last step-
+Index_genome.1.bt2                  
+Index_genome.2.bt2                  
+Index_genome.3.bt2                   
+Index_genome.4.bt2                  
+Index_genome.rev.1.bt2              
+Index_genome.rev.2.bt2
+
+This is the index Genome.
+
+#
+
