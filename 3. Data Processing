@@ -44,3 +44,5 @@ This is the index Genome.
 #Downloading Transcriptomic data sets
 After finding the appropriate transcriptomic data sets, they will need to be downloaded onto the hpc. 
 
+Every transcriptome on sra NCBI has a corresponding run key. These numbers strings typically start with "SRR." Make note of the run key(including the characters at the beginning), as this is what is used to download the transcriptome. 
+
