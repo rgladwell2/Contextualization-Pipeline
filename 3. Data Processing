@@ -46,3 +46,26 @@ After finding the appropriate transcriptomic data sets, they will need to be dow
 
 Every transcriptome on sra NCBI has a corresponding run key. These numbers strings typically start with "SRR." Make note of the run key(including the characters at the beginning), as this is what is used to download the transcriptome. 
 
+Use the following code to create a script to downlaod any transcriptome to a desired hpc:
+
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=16
+#SBATCH -t 120:00:00#
+SBATCH --mem=150000
+#SBATCH --account=CSBLRivanna
+#SBATCH --partition=standard
+
+module load sratoolkit/2.10.5
+fastq-dump --split-files ${1}
+
+
+I named my script sra.slurm. After writing the script use the following code to execut it for the desired data sets:
+
+for x in SRR#; do sbatch scriptname $x; done
+
+ex. code: for x in SRR2080030 SRR7777123; do sbatch sra.slurm $x; done
+
+This will download and save the transcriptomes as their run key.fastq. Some download as single end reads and others download as paired end reads. Single ends will download in one file while paired ends will download in two. 
+
+These are the transcriptomic data sets. 
