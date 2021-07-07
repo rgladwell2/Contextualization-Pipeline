@@ -1,1 +1,33 @@
 
+Links for Ubuntu tutorials
+ 
+https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview
+
+https://ubuntu.com/tutorials/command-line-for-beginners#1-overview
+
+
+
+
+Common commands or processses I used:
+
+cd filelocation- moves into a certain location
+ex cd /scratch/username moves me into my scratch or cd /home/username moves me into my home
+
+pwd - outputs the current location
+ex. pwd might output /home/usernmae if that is the current location
+
+nano filename- creates a new file with the given name or moves into existing file with that name
+ex. nano workspace  will either create a file named workspace or, if workspace already exists, move into it. 
+
+rm filename- deletes files with the file name
+ex. rm workspace would delete the workspace file
+
+mv filename location- moves a file to a desired location
+ex. mv workspace /home/username moves the workspace file into my home directory
+
+sudo apt-get or pip.exe install are ways to install packages. Each package is different and it is best to look up how to install them on ubuntu specifically.
+
+sqeue -u username - checks how long a process has been going for.
+
+
+
