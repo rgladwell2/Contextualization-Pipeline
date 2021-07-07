@@ -69,3 +69,5 @@ ex. code: for x in SRR2080030 SRR7777123; do sbatch sra.slurm $x; done
 This will download and save the transcriptomes as their run key.fastq. Some download as single end reads and others download as paired end reads. Single ends will download in one file while paired ends will download in two. 
 
 These are the transcriptomic data sets. 
+
+
