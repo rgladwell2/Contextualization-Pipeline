@@ -1,4 +1,4 @@
-# Pseudomonas-Pipeline
+# Model-Contextualization-Pipeline
 A tutorial for contextualizing metabolic models, using Pseudomonas Aeruginosa as an example
 
 
