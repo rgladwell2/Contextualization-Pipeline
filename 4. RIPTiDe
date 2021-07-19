@@ -4,3 +4,33 @@ By now, you should have a location where your processed transcriptomic data and 
 
 Start by downloading RIPTiDe in the anaconda prompt using: pip install riptide==3.3.5
 Next we can enter jupyter notebook in the location where our materials are stored. Import everything for RIPTiDe and modeling:
+
+import xlrd
+import pandas as pd
+import pickle
+from libsbml import *
+from pprint import pprint
+from cobra.flux_analysis import gapfill
+from copy import *
+from cobra import *
+from cobra.flux_analysis import *
+from LJD_Functions_DDP import *
+from DDP_Functions  import *
+from time import time
+from riptide import *
+
+import cobra
+import csv
+import numpy as np
+
+Next we need to read in our tsv with the following command: 
+transcriptomic_data=riptide.read_transcription_file("Output.tsv")
+
+Now to create the contextualized model:
+
+model =cobra.io.load_json_model("Model.json")
+for i in model.exchanges:
+         i.lower_bound = -1000
+Contextualized_Model = riptide.contextualize(model=model,transcriptome=transcriptomic_data)
+
+CONGRATULATIONS! You have created a contextualized data set!
