@@ -9,3 +9,8 @@ RIPTiDe Processing: The GENRE and the transcriptome are passed through RIPTiDe t
 Model Analysis: The new model should then be explored and compared with others. It would be useful to compare the contextualized metabolic model to other contextualized models, or to the previously general model. Interesting trends can be gleaned through this analysis, which might lead to innovations in medicine or other fields, depending on the purpose for the project. 
 
 The aim of this tutorial is to guide those through the process of using and understanding RIPTiDe, so more analysis of contextualized models can be done. Ideally, the procedure is clear and easy to follow. 
+
+
+Download Anaconda: https://www.anaconda.com/products/individual#Downloads
+Download jupyter notebook in Anaconda prompt: pip install jupyterlab
+Download Ubuntu: https://ubuntu.com/download/desktop
