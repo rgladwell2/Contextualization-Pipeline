@@ -284,9 +284,9 @@ rm reads.merge.sort.bam
 
 #Moving output
 It's now time to move output files to jupyter notebook for analysis with RIPTiDe. Use the same sftp procedure as before but instead of put, use get. 
-get Output.tsv /desired/location/path
+get /current/location/Output.tsv /desired/location/path
 Here is my sample code:
-get CFLung.tsv /mnt/c/Users/rglad/Documents/Modeling
+ get /scratch/rag6yy/CF.lung.tsv /mnt/c/Users/rglad/Documents/REU Modeling
 
 
 Once you get your output .tsv files into the same location as your GENRE, you are ready to create a contextualized model!
