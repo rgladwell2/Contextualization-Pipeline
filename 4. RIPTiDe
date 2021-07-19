@@ -3,6 +3,17 @@
 By now, you should have a location where your processed transcriptomic data and GENRE are stored. 
 
 Start by downloading RIPTiDe in the anaconda prompt using: pip install riptide==3.3.5
+
+RIPTiDe works with .json models- if you have a .xml model simply use the following code to convert the model:
+
+model =cobra.io.read_sbml_model("Model.xml")
+cobra.io.save_json_model(model, "Model.json")
+
+Here's my code:
+
+model =cobra.io.read_sbml_model("iPau21.xml")
+cobra.io.save_json_model(model, "iPau21.json")
+
 Next we can enter jupyter notebook in the location where our materials are stored. Import everything for RIPTiDe and modeling:
 
 import xlrd
@@ -32,5 +43,15 @@ model =cobra.io.load_json_model("Model.json")
 for i in model.exchanges:
          i.lower_bound = -1000
 Contextualized_Model = riptide.contextualize(model=model,transcriptome=transcriptomic_data)
+
+Here's my sample code:
+
+lung2=riptide.read_transcription_file("CF.lung.tsv")
+
+model =cobra.io.load_json_model("iPau21.json")
+#I set the lower bound to -1000 to allow nutrition into my model because by default it is 0
+for i in model.exchanges:
+         i.lower_bound = -1000
+PA_lung1 = riptide.contextualize(model=model,transcriptome=lung2)
 
 CONGRATULATIONS! You have created a contextualized data set!
