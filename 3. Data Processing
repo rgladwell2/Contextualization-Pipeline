@@ -4,6 +4,7 @@ Because of the large computational demands of processing transcriptomic data, a 
 #Index Genome
 This first step is to find and download the reference genome. This should be done locally. When downloading the genome, the file should be in FASTA format, having a .fasta or .fa extention. When downloading off of NCBI, the file is often stored in a .fna.gz format. To convert the file into the appropriate format, the file must first be unzipped. In Ubuntu, locate the location of the downloaded file and move it to the folder you are working in: I simply used my base directory. 
 
+
 My code, which moves the downloaded genome from NCBI into my workspace:
 mv /mnt/c/Users/rglad/Downloads/GCF_000006765.1_ASM676v1_genomic.fna.gz /home/rgladwell2
 
@@ -15,7 +16,7 @@ My example code:
  
  Use the rm command to get rid of any files you no longer need, such as the remaining .fna file.
  
- It is now time to upload the .fa file to an HPC. For my HPC, I simply signed into sftp(secure file transfer protocol) on the rivanna server then used the put command to put the file in my scratch directory.
+ It is now time to upload the .fa file to an HPC. For my HPC, I  signed into sftp(secure file transfer protocol) on the rivanna server then used the put command to put the file in my scratch directory.
  
  Ex. code: put GCF_000006765.1_ASM676v1_genomic.fa /scratch/username/
  
@@ -40,6 +41,11 @@ Index_genome.rev.1.bt2
 Index_genome.rev.2.bt2
 
 This is the index Genome.
+Some troubleshooting might be required here. For my project, the reference genome I chose created an invalid reference genome, so I had to download gene data from another webstie and format the file to work with my model. 
+
+
+
+
 
 #Downloading Transcriptomic data sets
 After finding the appropriate transcriptomic data sets, they will need to be downloaded onto the hpc. 
@@ -69,5 +75,149 @@ ex. code: for x in SRR2080030 SRR7777123; do sbatch sra.slurm $x; done
 This will download and save the transcriptomes as their run key.fastq. Some download as single end reads and others download as paired end reads. Single ends will download in one file while paired ends will download in two. 
 
 These are the transcriptomic data sets. 
+
+
+
+
+
+Next, on your local Ubuntu, download sickle. The tutorial link is below:
+https://github.com/najoshi/sickle
+
+After downloading, move the file to your hpc server, to the same directory as your transcriptomic data sets. Sickle is used soon. Note that you also have to download zlib for using sickle. Links to zlib here: http://www.zlib.net/
+
+
+
+
+
+
+
+Now, we want to construct a .csv or .tsv file that contains the gene ID, length, and # of hits. To do this , create the following script:
+so first use nano "script name here" to create the script location-for uniformity, I have given all files the name of their purpose- name them whatever you like as long as you maintain consistency.
+
+#First is the script for single end reads. 
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=16
+#SBATCH -t 20:00:00
+#SBATCH --mem=150000
+#SBATCH --account=CSBLRivanna
+#SBATCH --partition=standard
+
+module load gcc/9.2.0 bowtie2/2.2.9
+module load samtools/1.10
+
+#Quality trim samples based on quality scores
+#first is the location of your sickle file.
+/scratch/rag6yy/sickle se -t sanger \
+        -f input_SRR_file.fastq \
+        -o intermediate_trim_file.fastq \
+       
+       
+#Single Reads
+bowtie2 -q --fr -x Index_genome \
+        -U intermediate_trim_file.fastq \
+        -S single.reads.sam
+samtools view -h single.reads.sam -o single.reads.bam
+samtools sort single.reads.bam -o single.reads.sort.bam
+rm single.reads.bam single.reads.sam
+
+
+#Sort again
+samtools sort single.reads.sort.bam -o single.reads.sort2.bam
+
+#readable format
+samtools idxstats single.reads.sort2.bam > Output.tsv
+
+
+HERE IS MY SAMPLE CODE FOR SINGLE READS:
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=16
+#SBATCH -t 20:00:00
+#SBATCH --mem=150000
+#SBATCH --account=CSBLRivanna
+#SBATCH --partition=standard
+
+
+module load gcc/9.2.0 bowtie2/2.2.9
+module load samtools/1.10
+
+#Quality trim samples based on quality scores
+/scratch/rag6yy/sickle se -t sanger \
+        -f SRR7777123_1.fastq \
+        -o CFLung.trim.fastq \
+
+#Single Reads
+bowtie2 -q --fr -x Pseudomonas_genes \
+        -U CFLung.trim.fastq \
+        -S single.reads.sam
+samtools view -h single.reads.sam -o single.reads.bam
+samtools sort single.reads.bam -o single.reads.sort.bam
+rm single.reads.bam single.reads.sam
+
+#Sort again
+samtools sort single.reads.sort.bam -o single.reads.sort2.bam
+
+#readable format
+samtools idxstats single.reads.sort2.bam > CF.lung.tsv
+
+
+
+
+
+
+
+#Next is the script for paired end reads- it is not all that different. 
+
+#!/bin/bash
+#SBATCH--nodes=1
+#SBATCH--ntasks-per-node=16
+#SBATCH -t 20:00:00
+#SBATCH --mem=150000
+#SBATCH --account=CSBLRivanna
+#SBATCH --partition=standard
+
+module load gcc/9.2.0 bowtie2/2.2.9
+module load samtools/1.10
+
+#Quality trim samples based on quality scores
+/scratch/rag6yy/sickle pe -t sanger -q 25 -l 21 \
+        -f  Input_transcriptome_1.fastq \
+        -r  Input_transcriptome_2.fastq \
+        -o Input_transcriptome_1.trim.fastq \
+        -p Input_transcriptome_2.trim.fastq \
+        -s Orphan_reads.fastq
+        
+        
+ #paired reads
+bowtie2 -q --fr -x Index_genome
+        -1 Input_transcriptome_1.trim.fastq \
+        -2 Input_transcriptome_2.trim.fastq \
+        -S pair.reads.sam
+samtools view -bS pair.reads.sam > pair.reads.bam
+samtools sort -o pair.reads.sort.bam pair.reads.bam
+rm pair.reads.sam pair.reads.bam
+
+#Orphaned reads
+bowtie2 -q -x Index_genome
+        -U Orphan_reads.fastq \
+        -S orphanReads.sam
+samtools view -bS orphanReads.sam > orphanReads.bam
+samtools sort -o orphanReads.sort.bam orphanReads.bam
+rm orphanReads.bam orphanReads.sam
+
+#merge Alignments
+samtools merge reads.merge.bam pair.reads.sort.bam orphanReads.sort.bam
+samtools sort -o reads.merge.sort.bam reads.merge.bam
+rm reads.merge.bam orphanReads.sort.bam pair.reads.sort.bam
+
+#Readable format
+samtools idxstats reads.merge.sort.bam > Output.tsv
+rm reads.merge.sort.bam
+
+
+
+
+
 
 
