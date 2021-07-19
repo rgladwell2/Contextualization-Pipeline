@@ -17,7 +17,7 @@ Ex. of GitHub as a modeling resource: https://github.com/cdanielmachado/carveme
 For my project, I accessed my model via GitHub. The model is of P. Aeruginosa UCBPP-PA14 and is named iPau21. 
 
 Models can be in many formats, the most common of which are .json and .xml. Each of these require different syntax in order to import into Jupyter Notebook.
-See "Importing Data" section for more detail
+See "CobraPy Modeling" section for more detail
 Keep track of where exactly you store the model on your computer, as you will need to move your transcriptomic data there later. 
 
 ##Transcriptome
