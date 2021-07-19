@@ -1,1 +1,6 @@
+##Creating a contextualized model
 
+By now, you should have a location where your processed transcriptomic data and GENRE are stored. 
+
+Start by downloading RIPTiDe in the anaconda prompt using: pip install riptide==3.3.5
+Next we can enter jupyter notebook in the location where our materials are stored. Import everything for RIPTiDe and modeling:
