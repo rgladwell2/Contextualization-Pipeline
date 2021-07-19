@@ -1,5 +1,21 @@
 Because of the large computational demands of processing transcriptomic data, a HPC system is often used. Remote HPC servers can be accesssed remotely off of a base platform. For my project I used Ubuntu, so this section will include only Ubuntu syntax. See section 3.1 for basic Ubuntu commands. 
 
+Table of Contents:
+#Index Genome
+#Downloading Transcriptomic Data sets
+#Downloading sickle
+#Processing reads-single and paired 
+#Moving Output .tsv 
+
+
+
+
+
+
+
+
+
+
 
 #Index Genome
 This first step is to find and download the reference genome. This should be done locally. When downloading the genome, the file should be in FASTA format, having a .fasta or .fa extention. When downloading off of NCBI, the file is often stored in a .fna.gz format. To convert the file into the appropriate format, the file must first be unzipped. In Ubuntu, locate the location of the downloaded file and move it to the folder you are working in: I simply used my base directory. 
@@ -79,7 +95,7 @@ These are the transcriptomic data sets.
 
 
 
-
+#Downloading sickle
 Next, on your local Ubuntu, download sickle. The tutorial link is below:
 https://github.com/najoshi/sickle
 
@@ -90,7 +106,7 @@ After downloading, move the file to your hpc server, to the same directory as yo
 
 
 
-
+#Processing reads
 Now, we want to construct a .csv or .tsv file that contains the gene ID, length, and # of hits. To do this , create the following script:
 so first use nano "script name here" to create the script location-for uniformity, I have given all files the name of their purpose- name them whatever you like as long as you maintain consistency.
 
@@ -217,7 +233,63 @@ rm reads.merge.sort.bam
 
 
 
+HERE IS MY SAMPLE CODE FOR PAIRED ENDS: 
+#!/bin/bash
+#SBATCH--nodes=1
+#SBATCH--ntasks-per-node=16
+#SBATCH -t 20:00:00
+#SBATCH --mem=150000
+#SBATCH --account=CSBLRivanna
+#SBATCH --partition=standard
 
+module load gcc/9.2.0 bowtie2/2.2.9
+module load samtools/1.10
+
+#Quality trim samples based on quality scores
+/scratch/rag6yy/sickle pe -t sanger -q 25 -l 21 \
+        -f  SRR2080030_1.fastq \
+        -r  SRR2080030_2.fastq \
+        -o BurnWound1.trim.fastq \
+        -p BurnWound2.trim.fastq \
+        -s BurnOrphan.fastq
+        
+#paired reads
+bowtie2 -q --fr -x Pseudomonas_genes \
+        -1 BurnWound1.trim.fastq \
+        -2 BurnWound2.trim.fastq \
+        -S pair.reads.sam
+samtools view -bS pair.reads.sam > pair.reads.bam
+samtools sort -o pair.reads.sort.bam pair.reads.bam
+rm pair.reads.sam pair.reads.bam
+
+#Orphaned reads
+bowtie2 -q -x Pseudomonas_genes \
+        -U BurnOrphan.fastq \
+        -S orphanReads.sam
+samtools view -bS orphanReads.sam > orphanReads.bam
+samtools sort -o orphanReads.sort.bam orphanReads.bam
+rm orphanReads.bam orphanReads.sam
+
+#merge Alignments
+samtools merge reads.merge.bam pair.reads.sort.bam orphanReads.sort.bam
+samtools sort -o reads.merge.sort.bam reads.merge.bam
+rm reads.merge.bam orphanReads.sort.bam pair.reads.sort.bam
+
+#Readable format
+samtools idxstats reads.merge.sort.bam > burn_pseudomonas.tsv
+rm reads.merge.sort.bam
+
+
+
+
+#Moving output
+It's now time to move output files to jupyter notebook for analysis with RIPTiDe. Use the same sftp procedure as before but instead of put, use get. 
+get Output.tsv /desired/location/path
+Here is my sample code:
+get CFLung.tsv /mnt/c/Users/rglad/Documents/Modeling
+
+
+Once you get your output .tsv files into the same location as your GENRE, you are ready to create a contextualized model!
 
 
 
