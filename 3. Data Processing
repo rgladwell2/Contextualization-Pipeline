@@ -32,7 +32,7 @@ My example code:
  
  Use the rm command to get rid of any files you no longer need, such as the remaining .fna file.
  
- It is now time to upload the .fa file to an HPC. For my HPC, I  signed into sftp(secure file transfer protocol) on the rivanna server then used the put command to put the file in my scratch directory.
+ It is now time to upload the .fa file to an HPC. For my HPC, I signed into sftp(secure file transfer protocol) on the rivanna server then used the put command to put the file in my scratch directory.
  
  Ex. code: put GCF_000006765.1_ASM676v1_genomic.fa /scratch/username/
  
@@ -57,7 +57,7 @@ Index_genome.rev.1.bt2
 Index_genome.rev.2.bt2
 
 This is the index Genome.
-Some troubleshooting might be required here. For my project, the reference genome I chose created an invalid reference genome, so I had to download gene data from another webstie and format the file to work with my model. 
+Some troubleshooting might be required here. For my project, the reference genome I chose created an invalid reference genome, so I had to download gene data from another webstie and format the file to work with my model. I used the same process as above, just with a different file. 
 
 
 
@@ -124,7 +124,7 @@ module load samtools/1.10
 
 #Quality trim samples based on quality scores
 #first is the location of your sickle file.
-/scratch/rag6yy/sickle se -t sanger \
+/location/of/sickle se -t sanger \
         -f input_SRR_file.fastq \
         -o intermediate_trim_file.fastq \
        
@@ -197,7 +197,7 @@ module load gcc/9.2.0 bowtie2/2.2.9
 module load samtools/1.10
 
 #Quality trim samples based on quality scores
-/scratch/rag6yy/sickle pe -t sanger -q 25 -l 21 \
+/location/of/sickle pe -t sanger -q 25 -l 21 \
         -f  Input_transcriptome_1.fastq \
         -r  Input_transcriptome_2.fastq \
         -o Input_transcriptome_1.trim.fastq \
