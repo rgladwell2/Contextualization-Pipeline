@@ -1,4 +1,4 @@
-Welcome to the Model Contextualization Pipeline! THe purpose for this repository is to provide a tutorial for contextualizing metabolic models with RIPTiDe. I walk throug the process step by step, using a P. Aeruginosa model and relevant transcriptomes as an example. Essentially, the project can be split into 4 major phases:
+Welcome to the Model Contextualization Pipeline! THe purpose for this repository is to provide a tutorial for contextualizing metabolic models with RIPTiDe. I walk through the process step by step, using a P. Aeruginosa model and relevant transcriptomes as an example. Essentially, the project can be split into 4 major phases:
 
 Data Collection: If one desires to contextualize a model for a specific environment, it is important to find an appropriate, updated model first. Then, he or she must find transcriptomic data sets that appropriately reflect the transcriptional activity of an organism in a relevant environment. The model, or GENRE, and the transcriptomes and not necessarily easy to find. I provide the resources I used to find the materials for my project, but the resources are not limited to those alone. 
 
