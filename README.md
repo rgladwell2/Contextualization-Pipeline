@@ -3,8 +3,10 @@ A tutorial for contextualizing metabolic models, using Pseudomonas Aeruginosa as
 
 
 ## Table of Contents
-1.) Find a transcriptomic data set which provides specific context for a given model
+1.) Introduction
 
-2.) Download and clean data
+2.) Find a transcriptomic data set which provides specific context for a given model
 
-3.) Use RIPTiDe to contextualize the model using the data
+3.) Download and clean data
+
+4.) Use RIPTiDe to contextualize the model using the data
