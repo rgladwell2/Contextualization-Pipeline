@@ -54,4 +54,4 @@ for i in model.exchanges:
          i.lower_bound = -1000
 PA_lung1 = riptide.contextualize(model=model,transcriptome=lung2)
 
-CONGRATULATIONS! You have created a contextualized data set!
+CONGRATULATIONS! You have created a contextualized metabolic model!
