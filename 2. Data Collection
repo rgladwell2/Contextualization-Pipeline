@@ -3,7 +3,7 @@ For computational modeling, I used CobraPy. For this reason, my tutorial is limi
 
 ##GENRE
 The first step is to find an up-to-date metabolic model of a given organism (GENRE).
-GENRE's contain mathematical representations of all of the metabolic processes included in a given organism.
+GENRE's are mathematical representations of all of the metabolic processes included in a given organism.
 The model will be used in RIPTiDe as the foundational basis of the more contextualized model. 
 
 There are many models for use on BioModels, a public repository for mathematical models. There are also easy to access models on GitHub. 
@@ -18,7 +18,7 @@ For my project, I accessed my model via GitHub. The model is of P. Aeruginosa UC
 
 Models can be in many formats, the most common of which are .json and .xml. Each of these require different syntax in order to import into Jupyter Notebook.
 See "CobraPy Modeling" section for more detail
-Keep track of where exactly you store the model on your computer, as you will need to move your transcriptomic data there later. 
+Keep track of where exactly you save the model on your computer, as you will need to move your transcriptomic data there later. 
 
 ##Transcriptome
 Next, find a transcriptome of the organism in a paritular environment that would provide the desired context for the model. 
