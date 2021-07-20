@@ -1,6 +1,14 @@
 #Data Collection
 For computational modeling, I used CobraPy. For this reason, my tutorial is limited to CobraPy syntax, which can be found in section 2.1
 
+##Table Of Contents
+#Genre
+#Transcriptome
+#Genome
+
+
+
+
 ##GENRE
 The first step is to find an up-to-date metabolic model of a given organism (GENRE).
 GENRE's are mathematical representations of all of the metabolic processes included in a given organism.
@@ -20,7 +28,7 @@ Models can be in many formats, the most common of which are .json and .xml. Each
 See "CobraPy Modeling" section for more detail
 Keep track of where exactly you save the model on your computer, as you will need to move your transcriptomic data there later. 
 
-##Transcriptome
+#Transcriptome
 Next, find a transcriptome of the organism in a paritular environment that would provide the desired context for the model. 
 Appropriate transcriptomes can demand extensive searching. However, they can be found in many places.
 Using Google Scholar to find relevant research articles is an effective strategy, as the transcriptomic data sets are sometimes attached. NCBI SRA(Sequence Read Archives) 
