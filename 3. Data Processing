@@ -145,7 +145,7 @@ samtools sort single.reads.sort.bam -o single.reads.sort2.bam
 samtools idxstats single.reads.sort2.bam > Output.tsv
 
 
-HERE IS MY SAMPLE CODE FOR SINGLE READS:
+HERE IS MY SAMPLE CODE FOR AN EXAMPLE SINGLE READS:
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=16
@@ -177,11 +177,44 @@ samtools sort single.reads.sort.bam -o single.reads.sort2.bam
 #readable format
 samtools idxstats single.reads.sort2.bam > CF.lung.tsv
 
+HERE IS MY GENERALIZED CODE FOR A LIST OF SINGLE READS: 
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=16
+#SBATCH -t 20:00:00
+#SBATCH --mem=150000
+#SBATCH --account=CSBLRivanna
+#SBATCH --partition=standard
 
 
+module load gcc/9.2.0 bowtie2/2.2.9
+module load samtools/1.10
+
+#Quality trim samples based on quality scores
+/scratch/rag6yy/sickle se -t sanger \
+        -f ${1}_1.fastq \
+        -o ${1}.trim.fastq \
+
+#Single Reads
+bowtie2 -q --fr -x Pseudomonas_genes \
+        -U ${1}.trim.fastq \
+        -S single.reads.sam
+samtools view -h single.reads.sam -o single.reads.bam
+samtools sort single.reads.bam -o single.reads.sort.bam
+rm single.reads.bam single.reads.sam
+
+#Sort again
+samtools sort single.reads.sort.bam -o single.reads.sort2.bam
 
 
+#readable format
+samtools idxstats single.reads.sort2.bam > ${1}.tsv
+rm single.reads.sort2.bam single.reads.sort.bam
 
+
+##Then run 
+
+for x in SRR7777123(or more, you could do all of your single read files here); do sbatch processing_single_reads $x; done
 
 #Next is the script for paired end reads- it is not all that different. 
 
@@ -280,6 +313,55 @@ samtools idxstats reads.merge.sort.bam > burn_pseudomonas.tsv
 rm reads.merge.sort.bam
 
 
+#HERE IS MY CODE FOR A LIST OF PAIRED READS:
+#!/bin/bash
+#SBATCH--nodes=1
+#SBATCH--ntasks-per-node=16
+#SBATCH -t 20:00:00
+#SBATCH --mem=150000
+#SBATCH --account=CSBLRivanna
+#SBATCH --partition=standard
+
+module load gcc/9.2.0 bowtie2/2.2.9
+module load samtools/1.10
+
+#Quality trim samples based on quality scores
+/scratch/rag6yy/sickle pe -t sanger -q 25 -l 21 \
+        -f  ${1}_1.fastq \
+        -r  ${1}_2.fastq \
+        -o ${1}1.trim.fastq \
+        -p ${1}2.trim.fastq \
+        -s ${1}Orphan.fastq
+
+#paired reads
+bowtie2 -q --fr -x Pseudomonas_genes \
+        -1 ${1}1.trim.fastq \
+        -2 ${1}2.trim.fastq \
+        -S pair.reads.sam
+samtools view -bS pair.reads.sam > pair.reads.bam
+samtools sort -o pair.reads.sort.bam pair.reads.bam
+rm pair.reads.sam pair.reads.bam
+
+#Orphaned reads
+bowtie2 -q -x Pseudomonas_genes \
+        -U ${1}Orphan.fastq \
+        -S orphanReads.sam
+samtools view -bS orphanReads.sam > orphanReads.bam
+samtools sort -o orphanReads.sort.bam orphanReads.bam
+rm orphanReads.bam orphanReads.sam
+
+#merge Alignments
+samtools merge reads.merge.bam pair.reads.sort.bam orphanReads.sort.bam
+samtools sort -o reads.merge.sort.bam reads.merge.bam
+rm reads.merge.bam orphanReads.sort.bam pair.reads.sort.bam
+
+#Readable format
+samtools idxstats reads.merge.sort.bam > ${1}.tsv
+rm reads.merge.sort.bam
+
+
+
+
 
 
 #Moving output
@@ -287,6 +369,15 @@ It's now time to move output files to jupyter notebook for analysis with RIPTiDe
 get /current/location/Output.tsv /desired/location/path
 Here is my sample code:
  get /scratch/rag6yy/CF.lung.tsv /mnt/c/Users/rglad/Documents/REU Modeling
+
+#HERES HOW TO MOVE ALL .tsv's at once:
+
+cd /location/of/files
+get *.tsv /local/location
+
+EXAMPLE CODE:
+cd /scratch/rag6yy/
+get *.tsv /mnt/c/Users/rglad/Documents
 
 
 Once you get your output .tsv files into the same location as your GENRE, you are ready to create a contextualized model!
