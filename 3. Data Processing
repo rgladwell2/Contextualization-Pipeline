@@ -22,23 +22,40 @@ This first step is to find and download the reference genome. This should be don
 
 
 My code, which moves the downloaded genome from NCBI into my workspace:
+----------------------------------------------------------------------------------------
 mv /mnt/c/Users/rglad/Downloads/GCF_000006765.1_ASM676v1_genomic.fna.gz /home/rgladwell2
+-----------------------------------------------------------------------------------------
+
+
+
 
 Now, when ls is called in the home directory, the file name should appear. We can now unzip the file uzing the command gunzip filename.fna.gz. When ls is called now, the file name should appear without the .gz format. Next the file should be converted from .fna to .fa. Use the command cp filename.fna filename.fa to accomplish this. 
 
 My example code:
+
+------------------------------------------------------------------------------------
  gunzip GCF_000006765.1_ASM676v1_genomic.fna.gz
  cp GCF_000006765.1_ASM676v1_genomic.fna GCF_000006765.1_ASM676v1_genomic.fa
+ -----------------------------------------------------------------------------------
+ 
+ 
  
  Use the rm command to get rid of any files you no longer need, such as the remaining .fna file.
  
  It is now time to upload the .fa file to an HPC. For my HPC, I signed into sftp(secure file transfer protocol) on the rivanna server then used the put command to put the file in my scratch directory.
- 
+
+------------------------------------------------------------------------------------
  Ex. code: put GCF_000006765.1_ASM676v1_genomic.fa /scratch/username/
+ ------------------------------------------------------------------------------------
+ 
+ 
+ 
  
  When executing ls in the scratch directory, the file should now appear
  The index genome can now be constructed. Run the following script in order to generate the index:
  
+ 
+ -------------------------------------------------------------------------------------
 module load gcc
 module load bowtie2
 bowtie2-build filename.fa Desired_filename_genes
@@ -47,6 +64,10 @@ Ex. code
 module load gcc
 module load bowtie2
 bowtie2-build bowtie2-build GCF_000006765.1_ASM676v1_genomic.fa Index_genome
+-----------------------------------------------------------------------------------------
+
+
+
 
 When running ls, 6 new files ending in .bt2 should have appeared bearing the name that you chose in the last step-
 Index_genome.1.bt2                  
@@ -70,6 +91,7 @@ Every transcriptome on sra NCBI has a corresponding run key. These numbers strin
 
 Use the following code to create a script to downlaod any transcriptome to a desired hpc:
 
+--------------------------------------------------------------------------------------------------------------------------------
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=16
@@ -81,12 +103,17 @@ SBATCH --mem=150000
 module load sratoolkit/2.10.5
 fastq-dump --split-files ${1}
 
+--------------------------------------------------------------------------------------------------------------------------------
+
 
 I named my script sra.slurm. After writing the script use the following code to execut it for the desired data sets:
 
+---------------------------------------------------------
 for x in SRR#; do sbatch scriptname $x; done
 
 ex. code: for x in SRR2080030 SRR7777123; do sbatch sra.slurm $x; done
+---------------------------------------------------------
+
 
 This will download and save the transcriptomes as their run key.fastq. Some download as single end reads and others download as paired end reads. Single ends will download in one file while paired ends will download in two. 
 
@@ -111,6 +138,7 @@ Now, we want to construct a .csv or .tsv file that contains the gene ID, length,
 so first use nano "script name here" to create the script location-for uniformity, I have given all files the name of their purpose- name them whatever you like as long as you maintain consistency.
 
 #First is the script for single end reads. 
+-----------------------------------------------------------------------------------------------------------------------------------
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=16
@@ -144,8 +172,10 @@ samtools sort single.reads.sort.bam -o single.reads.sort2.bam
 #readable format
 samtools idxstats single.reads.sort2.bam > Output.tsv
 
-
+-----------------------------------------------------------------------------------------------------------------------------------
 HERE IS MY SAMPLE CODE FOR AN EXAMPLE SINGLE READS:
+
+-----------------------------------------------------------------------------------------------------------------------------------
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=16
@@ -176,8 +206,14 @@ samtools sort single.reads.sort.bam -o single.reads.sort2.bam
 
 #readable format
 samtools idxstats single.reads.sort2.bam > CF.lung.tsv
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 HERE IS MY GENERALIZED CODE FOR A LIST OF SINGLE READS: 
+
+-----------------------------------------------------------------------------------------------------------------------------------
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=16
@@ -210,14 +246,20 @@ samtools sort single.reads.sort.bam -o single.reads.sort2.bam
 #readable format
 samtools idxstats single.reads.sort2.bam > ${1}.tsv
 rm single.reads.sort2.bam single.reads.sort.bam
+-----------------------------------------------------------------------------------------------------------------------------------
 
 
 ##Then run 
 
+-----------------------------------------------------------------------------------------------------------------------------------
 for x in SRR7777123(or more, you could do all of your single read files here); do sbatch processing_single_reads $x; done
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
 
 #Next is the script for paired end reads- it is not all that different. 
 
+-----------------------------------------------------------------------------------------------------------------------------------
 #!/bin/bash
 #SBATCH--nodes=1
 #SBATCH--ntasks-per-node=16
@@ -263,10 +305,14 @@ rm reads.merge.bam orphanReads.sort.bam pair.reads.sort.bam
 #Readable format
 samtools idxstats reads.merge.sort.bam > Output.tsv
 rm reads.merge.sort.bam
+-----------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
 HERE IS MY SAMPLE CODE FOR PAIRED ENDS: 
+
+-----------------------------------------------------------------------------------------------------------------------------------
 #!/bin/bash
 #SBATCH--nodes=1
 #SBATCH--ntasks-per-node=16
@@ -311,9 +357,15 @@ rm reads.merge.bam orphanReads.sort.bam pair.reads.sort.bam
 #Readable format
 samtools idxstats reads.merge.sort.bam > burn_pseudomonas.tsv
 rm reads.merge.sort.bam
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 
 #HERE IS MY CODE FOR A LIST OF PAIRED READS:
+
+-----------------------------------------------------------------------------------------------------------------------------------
 #!/bin/bash
 #SBATCH--nodes=1
 #SBATCH--ntasks-per-node=16
@@ -358,6 +410,7 @@ rm reads.merge.bam orphanReads.sort.bam pair.reads.sort.bam
 #Readable format
 samtools idxstats reads.merge.sort.bam > ${1}.tsv
 rm reads.merge.sort.bam
+-----------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -368,16 +421,26 @@ rm reads.merge.sort.bam
 It's now time to move output files to jupyter notebook for analysis with RIPTiDe. Use the same sftp procedure as before but instead of put, use get. 
 get /current/location/Output.tsv /desired/location/path
 Here is my sample code:
+
+-----------------------------------------------------------------------------------------------------------------------------------
  get /scratch/rag6yy/CF.lung.tsv /mnt/c/Users/rglad/Documents/REU Modeling
+ -----------------------------------------------------------------------------------------------------------------------------------
+ 
+ 
 
 #HERES HOW TO MOVE ALL .tsv's at once:
 
+-----------------------------------------------------------------------------------------------------------------------------------
 cd /location/of/files
 get *.tsv /local/location
+-----------------------------------------------------------------------------------------------------------------------------------
 
 EXAMPLE CODE:
+
+-----------------------------------------------------------------------------------------------------------------------------------
 cd /scratch/rag6yy/
 get *.tsv /mnt/c/Users/rglad/Documents
+-----------------------------------------------------------------------------------------------------------------------------------
 
 
 Once you get your output .tsv files into the same location as your GENRE, you are ready to create a contextualized model!
