@@ -142,7 +142,7 @@ so first use nano "script name here" to create the script location-for uniformit
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=16
-#SBATCH -t 20:00:00
+#SBATCH -t 50:00:00
 #SBATCH --mem=150000
 #SBATCH --account=CSBLRivanna
 #SBATCH --partition=standard
@@ -179,7 +179,7 @@ HERE IS MY SAMPLE CODE FOR AN EXAMPLE SINGLE READS:
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=16
-#SBATCH -t 20:00:00
+#SBATCH -t 50:00:00
 #SBATCH --mem=150000
 #SBATCH --account=CSBLRivanna
 #SBATCH --partition=standard
@@ -217,7 +217,7 @@ HERE IS MY GENERALIZED CODE FOR A LIST OF SINGLE READS:
 #!/bin/bash
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=16
-#SBATCH -t 20:00:00
+#SBATCH -t 50:00:00
 #SBATCH --mem=150000
 #SBATCH --account=CSBLRivanna
 #SBATCH --partition=standard
@@ -234,18 +234,19 @@ module load samtools/1.10
 #Single Reads
 bowtie2 -q --fr -x Pseudomonas_genes \
         -U ${1}.trim.fastq \
-        -S single.reads.sam
-samtools view -h single.reads.sam -o single.reads.bam
-samtools sort single.reads.bam -o single.reads.sort.bam
-rm single.reads.bam single.reads.sam
+        -S ${1}single.reads.sam
+samtools view -h ${1}single.reads.sam -o ${1}single.reads.bam
+samtools sort ${1}single.reads.bam -o ${1}single.reads.sort.bam
+rm ${1}single.reads.bam
 
 #Sort again
-samtools sort single.reads.sort.bam -o single.reads.sort2.bam
+samtools sort ${1}single.reads.sort.bam -o ${1}single.reads.sort2.bam
 
 
 #readable format
-samtools idxstats single.reads.sort2.bam > ${1}.tsv
-rm single.reads.sort2.bam single.reads.sort.bam
+samtools idxstats ${1}single.reads.sort2.bam > ${1}.tsv
+rm ${1}single.reads.sort2.bam ${1}single.reads.sort.bam
+rm ${1}single.reads.sam
 -----------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -263,7 +264,7 @@ for x in SRR7777123(or more, you could do all of your single read files here); d
 #!/bin/bash
 #SBATCH--nodes=1
 #SBATCH--ntasks-per-node=16
-#SBATCH -t 20:00:00
+#SBATCH -t 50:00:00
 #SBATCH --mem=150000
 #SBATCH --account=CSBLRivanna
 #SBATCH --partition=standard
@@ -316,7 +317,7 @@ HERE IS MY SAMPLE CODE FOR PAIRED ENDS:
 #!/bin/bash
 #SBATCH--nodes=1
 #SBATCH--ntasks-per-node=16
-#SBATCH -t 20:00:00
+#SBATCH -t 50:00:00
 #SBATCH --mem=150000
 #SBATCH --account=CSBLRivanna
 #SBATCH --partition=standard
@@ -369,7 +370,7 @@ rm reads.merge.sort.bam
 #!/bin/bash
 #SBATCH--nodes=1
 #SBATCH--ntasks-per-node=16
-#SBATCH -t 20:00:00
+#SBATCH -t 50:00:00
 #SBATCH --mem=150000
 #SBATCH --account=CSBLRivanna
 #SBATCH --partition=standard
@@ -389,27 +390,27 @@ module load samtools/1.10
 bowtie2 -q --fr -x Pseudomonas_genes \
         -1 ${1}1.trim.fastq \
         -2 ${1}2.trim.fastq \
-        -S pair.reads.sam
-samtools view -bS pair.reads.sam > pair.reads.bam
-samtools sort -o pair.reads.sort.bam pair.reads.bam
-rm pair.reads.sam pair.reads.bam
+        -S ${1}pair.reads.sam
+samtools view -bS ${1}pair.reads.sam > ${1}pair.reads.bam
+samtools sort -o ${1}pair.reads.sort.bam ${1}pair.reads.bam
+rm ${1}pair.reads.sam ${1}pair.reads.bam
 
 #Orphaned reads
 bowtie2 -q -x Pseudomonas_genes \
         -U ${1}Orphan.fastq \
-        -S orphanReads.sam
-samtools view -bS orphanReads.sam > orphanReads.bam
-samtools sort -o orphanReads.sort.bam orphanReads.bam
-rm orphanReads.bam orphanReads.sam
+        -S ${1}orphanReads.sam
+samtools view -bS ${1}orphanReads.sam > ${1}orphanReads.bam
+samtools sort -o ${1}orphanReads.sort.bam ${1}orphanReads.bam
+rm ${1}orphanReads.bam ${1}orphanReads.sam
 
 #merge Alignments
-samtools merge reads.merge.bam pair.reads.sort.bam orphanReads.sort.bam
-samtools sort -o reads.merge.sort.bam reads.merge.bam
-rm reads.merge.bam orphanReads.sort.bam pair.reads.sort.bam
+samtools merge ${1}reads.merge.bam ${1}pair.reads.sort.bam ${1}orphanReads.sort.bam
+samtools sort -o ${1}reads.merge.sort.bam ${1}reads.merge.bam
+rm ${1}reads.merge.bam ${1}orphanReads.sort.bam ${1}pair.reads.sort.bam
 
 #Readable format
-samtools idxstats reads.merge.sort.bam > ${1}.tsv
-rm reads.merge.sort.bam
+samtools idxstats ${1}reads.merge.sort.bam > ${1}.tsv
+rm ${1}reads.merge.sort.bam
 -----------------------------------------------------------------------------------------------------------------------------------
 
 
