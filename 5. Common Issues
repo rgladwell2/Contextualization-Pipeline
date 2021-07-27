@@ -1,1 +1,23 @@
+##ISSUES WITH GETTING A OCCUPIED .tsv FILE:
+
+The first thing to do if your .tsv is empty, or if the output looks unexpected, is the comment out any rm commands in your processing scripts. Then, go through all intermediate files and make sure they are occupied with expected output. If you find one of the imtermediate files looks strange, focus your attention on the code right before you output that file. If intermediate files look fine, see below for more assisstance.
+
+#Invalid reference genome:
+If your .tsv isn't full and your intermediate files look fine, the problem might lie in your reference genome. Go through all your referene genome files and make sure they are occupied and look normal. They should all contain a significant amount of data- having a small amount of data in a .bt2 file might indicate the problem is with the reference genome. 
+
+If you downloaded your file off of NCBI but you suspect it is not working, you might try downloading a raw genes read to use as your genome. Go to NCBI Gene and find the exact organism you want. Click the small link under the large link (Pardon the vague description). This should take you to a page with a table named Entrez records. Under direct links on the Gene section, click the link provided. A list of organisms should come up. Pick the one you need and scroll down until you find a reference assembly seciton. There should be a 'Genomic' section with a FASFTA file you can download. Attempt using this as your reference genome. (Make sure to recreate the .bt2 files and rewrite your code!)
+
+If that doesn't work, consider getting in touch with a researcher who has interacted with the organism of your choice extensively. They might have a reference genome that they use that you can use.
+
+
+
+#Improper Code:
+Make sure all of your code is exact. Small details can throw the code off. For example, in my project I had one extra dollar sign in my generalized code that completely disabled my code. Go over your code finely if you think it might be a potential cause of issue.
+
+#.fastq files
+The transcriptomic files can download improperly on rare occasion, or the availible information might be subpar. Consider deleteing and redownloading the data. If this doesn't work, try replicating the process with different datasets. If it works with different data, consider contacting the researchers responsible for collecting the data for your dataset to ask for assistance. 
+
+#Overloading an HPC
+If you submit too many jobs at once, they may all ubruptly fail if the strain on the HPC is too much. If you think the processing is failing due to the HPC, try submitting less jobs at once. If that doesn't work but you still suspect the HPC, get in touch with the HPC's support. 
+
 
