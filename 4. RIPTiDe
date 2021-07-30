@@ -1,4 +1,6 @@
 ##Creating a contextualized model
+A similar walkthrough of RIPTiDe can be found at the original GitHub repository: https://github.com/mjenior/riptide
+
 
 By now, you should have a location where your processed transcriptomic data and GENRE are stored. 
 
@@ -42,6 +44,7 @@ Now to create the contextualized model:
 model =cobra.io.load_json_model("Model.json")
 for i in model.exchanges:
          i.lower_bound = -1000
+         i.upper_bound = 1000
 Contextualized_Model = riptide.contextualize(model=model,transcriptome=transcriptomic_data)
 
 Here's my sample code:
@@ -49,9 +52,10 @@ Here's my sample code:
 lung2=riptide.read_transcription_file("CF.lung.tsv")
 
 model =cobra.io.load_json_model("iPau21.json")
-#I set the lower bound to -1000 to allow nutrition into my model because by default it is 0
+#I set the lower bound to -1000 and upper to 1000 to allow nutrition into my model because by default it is 0, and it is recommended to do this when working with RIPTiDe.
 for i in model.exchanges:
          i.lower_bound = -1000
+         i_upper_bound = 1000
 PA_lung1 = riptide.contextualize(model=model,transcriptome=lung2)
 
 CONGRATULATIONS! You have created a contextualized metabolic model!
