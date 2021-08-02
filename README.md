@@ -289,12 +289,12 @@ with model:
  3.) Data Processing
  Because of the large computational demands of processing transcriptomic data, a HPC system is often used. Remote HPC servers can be accesssed remotely off of a base platform. For my project I used Ubuntu, so this section will include only Ubuntu syntax. See section 3.1 for basic Ubuntu commands. 
 
-## Table of Contents:
-Index Genome
-Downloading Transcriptomic Data sets
-Downloading sickle
-Processing reads-single and paired 
-Moving Output .tsv 
+### Data Processing Table of Contents:
+1.)Index Genome
+2.) Downloading Transcriptomic Data sets
+3.) Downloading sickle
+4.)Processing reads-single and paired 
+5.)Moving Output .tsv 
 
 
 
