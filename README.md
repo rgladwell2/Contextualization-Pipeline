@@ -17,7 +17,7 @@ A tutorial for contextualizing metabolic models, using Pseudomonas Aeruginosa as
 
 
 
-1.) Introduction
+# 1.) Introduction
 ```
 Welcome to the Model Contextualization Pipeline! THe purpose for this repository is to provide a tutorial for contextualizing metabolic models with RIPTiDe. I walk through the process step by step, using a P. Aeruginosa model and relevant transcriptomes as an example. Essentially, the project can be split into 4 major phases:
 
@@ -37,7 +37,7 @@ Download Ubuntu: https://ubuntu.com/download/desktop
 ```
 
 
-2.) Data Collection
+# 2.) Data Collection
 ```
 For computational modeling, I used CobraPy. For this reason, my tutorial is limited to CobraPy syntax, which can be found in section 2.1
 
@@ -94,7 +94,7 @@ A complete reference genome of the organism in question is needed to processes t
 
 NCBI Genome: https://www.ncbi.nlm.nih.gov/genome
 ```
-2.1) CobraPy Modeling
+# 2.1) CobraPy Modeling
 
 # General Documentation
 
@@ -286,7 +286,7 @@ with model:
 ```
  This is used to compare how essential a gene or reaction is to the objective function and other metabolic processes
  
- 3.) Data Processing
+# 3.) Data Processing
  Because of the large computational demands of processing transcriptomic data, a HPC system is often used. Remote HPC servers can be accesssed remotely off of a base platform. For my project I used Ubuntu, so this section will include only Ubuntu syntax. See section 3.1 for basic Ubuntu commands. 
 
 ### Data Processing Table of Contents:
@@ -670,7 +670,7 @@ get *.tsv /mnt/c/Users/rglad/Documents
 Once you get your output .tsv files into the same location as your GENRE, you are ready to create a contextualized model!
 
 
-3.1) Ubuntu Basics
+# 3.1) Ubuntu Basics
 Links for Ubuntu tutorials
 ``` 
 https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview
@@ -735,7 +735,7 @@ sqeue -u username
 ```
 checks how long a process has been going for.
 
-4.) RIPTiDe
+# 4.) RIPTiDe
 ## Creating a contextualized model
 A similar walkthrough of RIPTiDe can be found at the original GitHub repository:  
 ```
@@ -801,7 +801,7 @@ PA_lung1 = riptide.contextualize(model=model,transcriptome=lung2)
 ```
 CONGRATULATIONS! You have created a contextualized metabolic model!
 
-5.) Troubleshooting
+# 5.) Troubleshooting
 ### ISSUES WITH GETTING A OCCUPIED .tsv FILE:
 
 The first thing to do if your .tsv is empty, or if the output looks unexpected, is the comment out any rm commands in your processing scripts. Then, go through all intermediate files and make sure they are occupied with expected output. If you find one of the imtermediate files looks strange, focus your attention on the code right before you output that file. If intermediate files look fine, see below for more assisstance.
