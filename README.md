@@ -12,3 +12,21 @@ A tutorial for contextualizing metabolic models, using Pseudomonas Aeruginosa as
 4.) Use RIPTiDe to contextualize the model using the data 
 
 5.) Troubleshooting Potential Issues 
+
+
+
+'Welcome to the Model Contextualization Pipeline! THe purpose for this repository is to provide a tutorial for contextualizing metabolic models with RIPTiDe. I walk through the process step by step, using a P. Aeruginosa model and relevant transcriptomes as an example. Essentially, the project can be split into 4 major phases:
+
+Data Collection: If one desires to contextualize a model for a specific environment, it is important to find an appropriate, updated model first. Then, he or she must find transcriptomic data sets that appropriately reflect the transcriptional activity of an organism in a relevant environment. The model, or GENRE, and the transcriptomes are not necessarily easy to find. I provide the resources I used to find the materials for my project, but the resources are not limited to those alone. 
+
+Data Proccessing: Transcriptomic data sets are extremely large, and usually a high power computer is needed. I am using the University of Virginia's HPC, Rivanna. The data must be made congruent enough to fit with the GENRE before it can be passed through RIPTiDe. 
+
+RIPTiDe Processing: The GENRE and the transcriptome are passed through RIPTiDe to output the contextualized model. 
+
+
+The aim of this tutorial is to guide those through the process of using and understanding RIPTiDe, so more analysis of contextualized models can be done. 
+
+
+Download Anaconda: https://www.anaconda.com/products/individual#Downloads
+Download jupyter notebook in Anaconda prompt: pip install jupyterlab
+Download Ubuntu: https://ubuntu.com/download/desktop'
