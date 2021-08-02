@@ -95,12 +95,13 @@ A complete reference genome of the organism in question is needed to processes t
 NCBI Genome: https://www.ncbi.nlm.nih.gov/genome
 ```
 2.1) CobraPy Modeling
-#General Documentation
+
+# General Documentation
 
 
-## Stuff to import at beginning-
+## Stuff to import at beginning
 
- Load packages & model
+Load packages & model
 ```
 import cobra
 import xlrd
